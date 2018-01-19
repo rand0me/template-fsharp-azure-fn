@@ -1,0 +1,18 @@
+{
+    "disabled": false,
+    "bindings": [
+      {
+        "type": "httpTrigger",
+        "direction": "in",
+        "authLevel": "function",
+        "name": "req"
+      },
+      {
+        "name": "$return",
+        "type": "http",
+        "direction": "out"
+      }
+    ],
+    "scriptFile": "bin/aggregator.dll",
+    "entryPoint": "Main.run"
+  }

@@ -1,0 +1,14 @@
+queue:
+  name: Default
+  demands: Cmd
+steps:
+- task: BatchScript@1
+  displayName: Build
+  inputs:
+    filename: "build.cmd"
+- task: PublishBuildArtifacts@1
+  displayName: Publish
+  inputs:
+    PathtoPublish: "deploy/drop.zip"
+    ArtifactName: "drop"
+    ArtifactType: "Container"

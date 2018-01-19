@@ -1,0 +1,14 @@
+framework: auto-detect
+storage: none
+
+source https://www.nuget.org/api/v2
+
+nuget Http.fs
+nuget Hopac.IO
+nuget Microsoft.NET.Sdk.Functions
+
+group build-gr
+
+    source https://www.nuget.org/api/v2
+
+    nuget FAKE ~> 4.63.0

@@ -1,0 +1,267 @@
+{
+    "source": 2,
+    "name": "<%= name %> CD",
+    "description": null,
+    "isDeleted": false,
+    "path": "\\",
+    "variables": {
+        "RESOURCE_GROUP": {
+            "value": "<%= resourcegroup %>"
+        },
+        "ACCOUNT_NAME": {
+            "value": "<%= accountname %>"
+        },
+        "FUNCTION_NAME": {
+            "value": "<%= name %>"
+        },
+        "PASWD": {
+            "value": null,
+            "isSecret": true
+        },
+        "SHARE_NAME": {
+            "value": "<%= name %>"
+        }
+    },
+    "variableGroups": [],
+    "environments": [
+        {
+            "id": 247,
+            "name": "QA",
+            "rank": 1,
+            "variables": {},
+            "variableGroups": [],
+            "preDeployApprovals": {
+                "approvals": [
+                    {
+                        "rank": 1,
+                        "isAutomated": true,
+                        "isNotificationOn": false,
+                        "id": 897
+                    }
+                ],
+                "approvalOptions": {
+                    "requiredApproverCount": null,
+                    "releaseCreatorCanBeApprover": false,
+                    "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+                    "enforceIdentityRevalidation": false,
+                    "timeoutInMinutes": 0,
+                    "executionOrder": 1
+                }
+            },
+            "deployStep": {
+                "id": 898
+            },
+            "postDeployApprovals": {
+                "approvals": [
+                    {
+                        "rank": 1,
+                        "isAutomated": true,
+                        "isNotificationOn": false,
+                        "id": 899
+                    }
+                ],
+                "approvalOptions": {
+                    "requiredApproverCount": null,
+                    "releaseCreatorCanBeApprover": false,
+                    "autoTriggeredAndPreviousEnvironmentApprovedCanBeSkipped": false,
+                    "enforceIdentityRevalidation": false,
+                    "timeoutInMinutes": 0,
+                    "executionOrder": 2
+                }
+            },
+            "deployPhases": [
+                {
+                    "deploymentInput": {
+                        "parallelExecution": {
+                            "parallelExecutionType": "none"
+                        },
+                        "skipArtifactsDownload": false,
+                        "artifactsDownloadInput": {
+                            "downloadInputs": []
+                        },
+                        "queueId": 1,
+                        "demands": [],
+                        "enableAccessToken": false,
+                        "timeoutInMinutes": 0,
+                        "jobCancelTimeoutInMinutes": 1,
+                        "condition": "succeeded()",
+                        "overrideInputs": {}
+                    },
+                    "rank": 1,
+                    "phaseType": 1,
+                    "name": "Agent phase",
+                    "workflowTasks": [
+                        {
+                            "taskId": "72a1931b-effb-4d2e-8fd8-f8472a07cb62",
+                            "version": "2.*",
+                            "name": "Azure PowerShell script: Stop Function App",
+                            "refName": "AzurePowerShell1",
+                            "enabled": true,
+                            "alwaysRun": false,
+                            "continueOnError": false,
+                            "timeoutInMinutes": 0,
+                            "definitionType": "task",
+                            "overrideInputs": {},
+                            "condition": "succeeded()",
+                            "inputs": {
+                                "ConnectedServiceNameSelector": "ConnectedServiceNameARM",
+                                "ConnectedServiceName": "",
+                                "ConnectedServiceNameARM": "d01e35ad-4f4c-4be4-a057-6fa148125efd",
+                                "ScriptType": "InlineScript",
+                                "ScriptPath": "",
+                                "Inline": "Stop-AzureRmWebApp -ResourceGroupName $env:RESOURCE_GROUP -Name $env:FUNCTION_NAME",
+                                "ScriptArguments": "",
+                                "TargetAzurePs": "LatestVersion",
+                                "CustomTargetAzurePs": ""
+                            }
+                        },
+                        {
+                            "taskId": "d9bafed4-0b18-4f58-968d-86655b4d2ce9",
+                            "version": "1.*",
+                            "name": "Mount share",
+                            "refName": "CmdLine1",
+                            "enabled": true,
+                            "alwaysRun": false,
+                            "continueOnError": false,
+                            "timeoutInMinutes": 0,
+                            "definitionType": "task",
+                            "overrideInputs": {},
+                            "condition": "succeeded()",
+                            "inputs": {
+                                "filename": "net",
+                                "arguments": "use \\\\$(ACCOUNT_NAME).file.core.windows.net\\$(SHARE_NAME) /u:AZURE\\$(ACCOUNT_NAME) $(PASWD)",
+                                "workingFolder": "",
+                                "failOnStandardError": "false"
+                            }
+                        },
+                        {
+                            "taskId": "b7e8b412-0437-4065-9371-edc5881de25b",
+                            "version": "1.*",
+                            "name": "Clean",
+                            "refName": "DeleteFiles1",
+                            "enabled": true,
+                            "alwaysRun": false,
+                            "continueOnError": false,
+                            "timeoutInMinutes": 0,
+                            "definitionType": "task",
+                            "overrideInputs": {},
+                            "condition": "succeeded()",
+                            "inputs": {
+                                "SourceFolder": "\\\\$(ACCOUNT_NAME).file.core.windows.net\\$(SHARE_NAME)\\site\\wwwroot\\",
+                                "Contents": "**"
+                            }
+                        },
+                        {
+                            "taskId": "31f040e5-e040-4336-878a-59a473334434",
+                            "version": "1.*",
+                            "name": "Unzip",
+                            "refName": "Unzip1",
+                            "enabled": true,
+                            "alwaysRun": false,
+                            "continueOnError": false,
+                            "timeoutInMinutes": 0,
+                            "definitionType": "task",
+                            "overrideInputs": {},
+                            "condition": "succeeded()",
+                            "inputs": {
+                                "ItemSpec": "$(System.DefaultWorkingDirectory)/drop/drop/drop.zip",
+                                "destination": "\\\\$(ACCOUNT_NAME).file.core.windows.net\\$(SHARE_NAME)\\site\\wwwroot\\"
+                            }
+                        },
+                        {
+                            "taskId": "72a1931b-effb-4d2e-8fd8-f8472a07cb62",
+                            "version": "2.*",
+                            "name": "Azure PowerShell script: Start Function App",
+                            "refName": "ClonedAzurePowerShell12",
+                            "enabled": true,
+                            "alwaysRun": false,
+                            "continueOnError": false,
+                            "timeoutInMinutes": 0,
+                            "definitionType": "task",
+                            "overrideInputs": {},
+                            "condition": "succeeded()",
+                            "inputs": {
+                                "ConnectedServiceNameSelector": "ConnectedServiceNameARM",
+                                "ConnectedServiceName": "",
+                                "ConnectedServiceNameARM": "d01e35ad-4f4c-4be4-a057-6fa148125efd",
+                                "ScriptType": "InlineScript",
+                                "ScriptPath": "",
+                                "Inline": "Start-AzureRmWebApp -ResourceGroupName $env:RESOURCE_GROUP -Name $env:FUNCTION_NAME",
+                                "ScriptArguments": "",
+                                "TargetAzurePs": "LatestVersion",
+                                "CustomTargetAzurePs": ""
+                            }
+                        }
+                    ]
+                }
+            ],
+            "environmentOptions": {
+                "emailNotificationType": "OnlyOnFailure",
+                "emailRecipients": "release.environment.owner;release.creator",
+                "skipArtifactsDownload": false,
+                "timeoutInMinutes": 0,
+                "enableAccessToken": false,
+                "publishDeploymentStatus": true
+            },
+            "demands": [],
+            "conditions": [
+                {
+                    "name": "ReleaseStarted",
+                    "conditionType": 1,
+                    "value": ""
+                }
+            ],
+            "executionPolicy": {
+                "concurrencyCount": 0,
+                "queueDepthCount": 0
+            },
+            "schedules": [],
+            "retentionPolicy": {
+                "daysToKeep": 30,
+                "releasesToKeep": 3,
+                "retainBuild": true
+            },
+            "processParameters": {},
+            "properties": {},
+            "preDeploymentGates": {
+                "id": 0,
+                "gatesOptions": {
+                    "isEnabled": false,
+                    "timeout": 1440,
+                    "samplingInterval": 15,
+                    "stabilizationTime": 15
+                },
+                "gates": []
+            },
+            "postDeploymentGates": {
+                "id": 0,
+                "gatesOptions": {
+                    "isEnabled": false,
+                    "timeout": 1440,
+                    "samplingInterval": 15,
+                    "stabilizationTime": 15
+                },
+                "gates": []
+            }
+        }
+    ],
+    "artifacts": [],
+    "triggers": [],
+    "releaseNameFormat": "Release-$(rev:r)",
+    "url": "https://arkadiumarena.vsrm.visualstudio.com/8d173395-e7e1-4a2b-9797-06e2a6338699/_apis/Release/definitions/102",
+    "_links": {
+        "self": {
+            "href": "https://arkadiumarena.vsrm.visualstudio.com/8d173395-e7e1-4a2b-9797-06e2a6338699/_apis/Release/definitions/102"
+        },
+        "web": {
+            "href": "https://arkadiumarena.visualstudio.com/8d173395-e7e1-4a2b-9797-06e2a6338699/_release?definitionId=102"
+        }
+    },
+    "tags": [],
+    "properties": {
+        "DefinitionCreationSource": {
+            "$type": "System.String",
+            "$value": "ReleaseClone"
+        }
+    }
+}

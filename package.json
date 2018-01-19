@@ -1,0 +1,25 @@
+{
+  "name": "template-fsharp-azure-fn",
+  "version": "0.0.0",
+  "description": "Azure Function F# Template",
+  "repository": {
+    "url": "rand0me/template-fsharp-azure-fn",
+    "type": "git"
+  },
+  "author": "rand0me <not.randome@gmail.com> (github.com/rand0me)",
+  "license": "MIT",
+  "files": [
+    "sao.js",
+    "template"
+  ],
+  "scripts": {
+    "test": "ava"
+  },
+  "dependencies": {
+    "superb": "^1.3.0"
+  },
+  "devDependencies": {
+    "ava": "^0.21.0",
+    "sao": "^0.22.1"
+  }
+}

@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Core Launch (console) of Example",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceRoot}/src/debug-prj/bin/Debug/netcoreapp2.0/debug-prj.dll",
+            "args": [""],
+            "cwd": "${workspaceRoot}",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickProcess}"
+        }
+    ]
+}
