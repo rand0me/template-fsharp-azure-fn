@@ -1,5 +1,7 @@
 # template-fsharp-azure-fn
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/rand0me/template-fsharp-azure-fn.svg)](https://greenkeeper.io/)
+
 > Azure Function F# Template
 
 ## Usage
